@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OCC Admin Panel</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f1e8;color:#201b15}.hero{padding:16px 5%;display:flex;justify-content:space-between;align-items:center;background:#17130e;color:#f7e7b0}.brand{display:flex;gap:12px;align-items:center}.brand b{display:block;letter-spacing:1px}.brand span{display:block;font-size:12px;color:#d8cda9}.coin-logo{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff0a8,#a87813);font-size:25px;box-shadow:0 0 0 2px #4e3a16}.lang,.secondary{background:#fff;border:1px solid #b8a56f;border-radius:10px;padding:10px 14px}.hero-card{margin:22px auto;max-width:1050px;padding:35px;border-radius:25px;background:linear-gradient(135deg,#21190e,#71521c);color:#fff5cf;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 40px #0002}.hero-card h1{font-size:clamp(28px,6vw,52px);max-width:700px;margin:8px 0}.hero-card p{max-width:650px}.eyebrow{font-size:12px;letter-spacing:3px;color:#e8c75e}.coin-art{font-size:55px;text-align:center;min-width:190px}.primary{display:inline-block;background:#d4a72c;color:#1c160b;border:0;border-radius:11px;padding:13px 18px;font-weight:800;text-decoration:none;cursor:pointer}.full{width:100%;margin-top:15px}.features{max-width:1050px;margin:20px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.features div,.stats div{background:white;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0000000c}.features b,.features small{display:block;margin-top:5px}.features small,.small{color:#756b5d;font-size:13px}.panel{max-width:1050px;margin:20px auto;padding:24px;background:white;border-radius:20px;box-shadow:0 7px 25px #0000000b}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}label{font-weight:700;font-size:14px}input,textarea,select{display:block;width:100%;margin-top:7px;border:1px solid #d5cdbd;border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:90px}.wide{grid-column:1/-1}.item{border:1px dashed #cbbd99;border-radius:15px;padding:15px;margin:12px 0}.item-head{display:flex;justify-content:space-between;align-items:center}.remove{border:0;background:#fee2e2;padding:7px 10px;border-radius:8px}.notice{margin-top:15px;padding:12px;border-radius:10px;background:#fff8df;color:#6b5519;font-size:13px}.result{margin-top:15px;padding:15px;border-radius:12px;background:#edf8ed}.hidden{display:none}.track-row{display:flex;gap:10px}.track-row input{margin:0}.contact{text-align:center}.admin-bg{background:#eee9dc}.login{max-width:430px;margin:70px auto;text-align:center}.admin-head{position:sticky;top:0;z-index:5}.stats{max-width:1050px;margin:20px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stats b{font-size:28px;display:block}.request-card{border:1px solid #ddd3bd;border-radius:15px;padding:15px;margin:12px 0}.request-card img{width:90px;height:90px;object-fit:cover;border-radius:9px;margin:5px}.request-meta{font-size:13px;color:#655d50}.status{font-weight:800}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}footer{text-align:center;padding:30px;color:#756b5d}@media(max-width:700px){.hero-card{margin:12px;padding:22px;display:block}.coin-art{display:none}.features,.stats,.grid{grid-template-columns:1fr}.wide{grid-column:auto}.panel{margin:12px;padding:18px}.track-row{display:block}.track-row button{margin-top:8px;width:100%}.actions{grid-template-columns:1fr}.hero{padding:12px 4%}}
+</style>
+</head>
+<body class="admin-bg">
+<div id="login" class="login panel">
+  <div class="coin-logo">🔐</div><h1>Owner Admin Panel</h1>
+  <p>यह panel customer के लिए नहीं है।</p>
+  <input id="password" type="password" placeholder="Admin Password">
+  <button class="primary full" onclick="login()">Login</button>
+  <p class="small">Demo password: <b>OCC1234</b> — production में इसे तुरंत बदलें।</p>
+</div>
+
+<div id="dashboard" class="hidden">
+<header class="hero admin-head"><div class="brand"><div class="coin-logo">🪙</div><div><b>OCC ADMIN</b><span>Owner Dashboard</span></div></div><button class="secondary" onclick="logout()">Logout</button></header>
+<main>
+<section class="stats">
+  <div><b id="count">0</b><small>Total Requests</small></div><div><b id="pending">0</b><small>Pending</small></div><div><b id="offers">0</b><small>Offers Given</small></div>
+</section>
+
+<section class="panel">
+<h2>Business Settings</h2>
+<div class="grid">
+<label>Calling Number<input id="setCall"></label>
+<label>WhatsApp Number<input id="setWa"></label>
+<label>Registration Fee<input id="setFee" type="number" min="0"></label>
+<label>Account Number<input id="setAccount"></label>
+<label>UPI / Payment ID<input id="setUpi"></label>
+<label>Barcode Text<input id="setBarcode"></label>
+</div>
+<button class="primary" onclick="saveSettings()">Save Settings</button>
+</section>
+
+<section class="panel"><h2>Customer Requests</h2><div id="requests"></div></section>
+</main></div>
+<script>
+const PASS='OCC1234';
+function getReq(){return JSON.parse(localStorage.getItem('occ_requests')||'[]')}
+function saveReq(x){localStorage.setItem('occ_requests',JSON.stringify(x))}
+function login(){if(document.getElementById('password').value===PASS){localStorage.setItem('occ_admin','1');show()}else alert('गलत password')}
+function logout(){localStorage.removeItem('occ_admin');location.reload()}
+function show(){document.getElementById('login').classList.add('hidden');document.getElementById('dashboard').classList.remove('hidden');load()}
+function load(){
+ const s=JSON.parse(localStorage.getItem('occ_settings')||'{}');
+ for(const k of ['Call','Wa','Fee','Account','Upi','Barcode']) document.getElementById('set'+k).value=s[k]||'';
+ const d=getReq();document.getElementById('count').textContent=d.length;document.getElementById('pending').textContent=d.filter(x=>x.status.startsWith('Pending')).length;document.getElementById('offers').textContent=d.filter(x=>x.offer).length;
+ document.getElementById('requests').innerHTML=d.length?d.map((r,i)=>`<div class="request-card"><h3>${r.id}</h3><div class="request-meta">${r.created} • ${r.name} • ${r.mobile}<br>${r.address}</div><p class="status">Status: ${r.status} ${r.offer?`• Offer: ₹${r.offer}`:''}</p><div>${r.items.map(it=>`<div class="item"><b>${it.type}</b> • Year: ${it.year||'-'} • Qty: ${it.qty}<br>${it.details||''}${it.photo?`<br><img src="${it.photo}">`:''}</div>`).join('')}</div><div class="actions"><input id="offer${i}" type="number" placeholder="Offer price ₹" value="${r.offer||''}"><select id="status${i}"><option ${r.status.includes('Pending')?'selected':''}>Pending / जाँच बाकी</option><option ${r.status.includes('Offer')?'selected':''}>Offer Given / कीमत दी गई</option><option ${r.status.includes('Approved')?'selected':''}>Approved / स्वीकृत</option><option ${r.status.includes('Rejected')?'selected':''}>Rejected / अस्वीकृत</option></select></div><button class="primary full" onclick="updateReq(${i})">Save Customer Update</button></div>`).join(''):'<p>अभी कोई request नहीं है।';
+}
+function updateReq(i){const d=getReq();d[i].offer=document.getElementById('offer'+i).value;d[i].status=document.getElementById('status'+i).value;saveReq(d);load()}
+function saveSettings(){const s={};for(const k of ['Call','Wa','Fee','Account','Upi','Barcode'])s[k]=document.getElementById('set'+k).value;localStorage.setItem('occ_settings',JSON.stringify(s));alert('Settings saved')}
+if(localStorage.getItem('occ_admin')==='1')show();
+</script>
+</body>
+</html>
