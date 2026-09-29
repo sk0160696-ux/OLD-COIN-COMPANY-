@@ -3,104 +3,1074 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Old Coin Company | पुराने नोट एवं सिक्के</title>
+<title>Old Coin Company | पुराने नोट और सिक्के</title>
+<meta name="description" content="Old Coin Company - पुराने नोट और सिक्के खरीदने के लिए request भेजें।">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f1e8;color:#201b15}.hero{padding:16px 5%;display:flex;justify-content:space-between;align-items:center;background:#17130e;color:#f7e7b0}.brand{display:flex;gap:12px;align-items:center}.brand b{display:block;letter-spacing:1px}.brand span{display:block;font-size:12px;color:#d8cda9}.coin-logo{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#fff0a8,#a87813);font-size:25px;box-shadow:0 0 0 2px #4e3a16}.lang,.secondary{background:#fff;border:1px solid #b8a56f;border-radius:10px;padding:10px 14px}.hero-card{margin:22px auto;max-width:1050px;padding:35px;border-radius:25px;background:linear-gradient(135deg,#21190e,#71521c);color:#fff5cf;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 40px #0002}.hero-card h1{font-size:clamp(28px,6vw,52px);max-width:700px;margin:8px 0}.hero-card p{max-width:650px}.eyebrow{font-size:12px;letter-spacing:3px;color:#e8c75e}.coin-art{font-size:55px;text-align:center;min-width:190px}.primary{display:inline-block;background:#d4a72c;color:#1c160b;border:0;border-radius:11px;padding:13px 18px;font-weight:800;text-decoration:none;cursor:pointer}.full{width:100%;margin-top:15px}.features{max-width:1050px;margin:20px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.features div,.stats div{background:white;border-radius:16px;padding:18px;box-shadow:0 5px 18px #0000000c}.features b,.features small{display:block;margin-top:5px}.features small,.small{color:#756b5d;font-size:13px}.panel{max-width:1050px;margin:20px auto;padding:24px;background:white;border-radius:20px;box-shadow:0 7px 25px #0000000b}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}label{font-weight:700;font-size:14px}input,textarea,select{display:block;width:100%;margin-top:7px;border:1px solid #d5cdbd;border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:90px}.wide{grid-column:1/-1}.item{border:1px dashed #cbbd99;border-radius:15px;padding:15px;margin:12px 0}.item-head{display:flex;justify-content:space-between;align-items:center}.remove{border:0;background:#fee2e2;padding:7px 10px;border-radius:8px}.notice{margin-top:15px;padding:12px;border-radius:10px;background:#fff8df;color:#6b5519;font-size:13px}.result{margin-top:15px;padding:15px;border-radius:12px;background:#edf8ed}.hidden{display:none}.track-row{display:flex;gap:10px}.track-row input{margin:0}.contact{text-align:center}.admin-bg{background:#eee9dc}.login{max-width:430px;margin:70px auto;text-align:center}.admin-head{position:sticky;top:0;z-index:5}.stats{max-width:1050px;margin:20px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stats b{font-size:28px;display:block}.request-card{border:1px solid #ddd3bd;border-radius:15px;padding:15px;margin:12px 0}.request-card img{width:90px;height:90px;object-fit:cover;border-radius:9px;margin:5px}.request-meta{font-size:13px;color:#655d50}.status{font-weight:800}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}footer{text-align:center;padding:30px;color:#756b5d}@media(max-width:700px){.hero-card{margin:12px;padding:22px;display:block}.coin-art{display:none}.features,.stats,.grid{grid-template-columns:1fr}.wide{grid-column:auto}.panel{margin:12px;padding:18px}.track-row{display:block}.track-row button{margin-top:8px;width:100%}.actions{grid-template-columns:1fr}.hero{padding:12px 4%}}
+:root{
+--bg:#f4f7fb;
+--card:#fff;
+--ink:#152033;
+--muted:#64748b;
+--brand:#7b4f20;
+--line:#e5e7eb;
+--ok:#087f5b;
+--danger:#b42318
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+background:var(--bg);
+color:var(--ink)
+}
+
+header{
+background:linear-gradient(135deg,#2b1a0c,#7b4f20);
+color:#fff;
+padding:18px 16px;
+position:sticky;
+top:0;
+z-index:5;
+box-shadow:0 3px 12px #0002
+}
+
+.brand{
+display:flex;
+gap:12px;
+align-items:center
+}
+
+.logo{
+width:46px;
+height:46px;
+border-radius:50%;
+background:#f7d38c;
+color:#4a2a0e;
+display:grid;
+place-items:center;
+font-size:25px
+}
+
+.brand b{font-size:20px}
+
+.brand small{
+display:block;
+opacity:.82;
+margin-top:2px
+}
+
+.lang{
+margin-left:auto;
+border:1px solid #ffffff55;
+background:#ffffff18;
+color:#fff;
+border-radius:10px;
+padding:8px 10px
+}
+
+main{
+max-width:920px;
+margin:auto;
+padding:18px
+}
+
+.hero,.panel,.notice{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:18px;
+padding:18px;
+margin-bottom:16px;
+box-shadow:0 6px 22px #1f29370b
+}
+
+.hero{
+background:linear-gradient(145deg,#fff,#fff8ed);
+text-align:center
+}
+
+.hero h1{
+margin:6px 0 8px;
+font-size:28px
+}
+
+.hero p{
+color:var(--muted);
+line-height:1.55
+}
+
+.badges{
+display:flex;
+gap:8px;
+justify-content:center;
+flex-wrap:wrap
+}
+
+.badge{
+background:#fff3dc;
+border:1px solid #f2d6a7;
+border-radius:999px;
+padding:7px 11px;
+font-size:13px
+}
+
+h2{
+margin:0 0 12px;
+font-size:20px
+}
+
+h3{
+margin:14px 0 8px;
+font-size:16px
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px
+}
+
+.full{
+grid-column:1/-1
+}
+
+label{
+display:block;
+font-weight:650;
+font-size:14px;
+margin-bottom:6px
+}
+
+input,textarea,select{
+width:100%;
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+font:inherit;
+background:#fff
+}
+
+textarea{
+min-height:90px;
+resize:vertical
+}
+
+.item{
+border:1px dashed #cbd5e1;
+border-radius:14px;
+padding:12px;
+margin:10px 0;
+background:#fafafa
+}
+
+.item-head{
+display:flex;
+justify-content:space-between;
+gap:8px;
+align-items:center
+}
+
+.remove{
+border:0;
+background:#fee4e2;
+color:#b42318;
+border-radius:8px;
+padding:6px 9px
+}
+
+button{
+border:0;
+border-radius:10px;
+padding:12px 15px;
+font-weight:700;
+cursor:pointer
+}
+
+.primary{
+background:var(--brand);
+color:#fff
+}
+
+.secondary{
+background:#eef2f7;
+color:#172033
+}
+
+.wide{
+width:100%
+}
+
+.actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:12px
+}
+
+.notice{
+font-size:13px;
+color:#475569;
+line-height:1.5
+}
+
+.notice strong{
+color:#1e293b
+}
+
+.result{
+padding:14px;
+border-radius:12px;
+background:#ecfdf3;
+border:1px solid #b7ebcc;
+color:#065f46;
+margin-top:14px
+}
+
+.error{
+background:#fff1f2;
+border-color:#fecdd3;
+color:#9f1239
+}
+
+.track{
+display:grid;
+grid-template-columns:1fr auto;
+gap:10px
+}
+
+footer{
+text-align:center;
+color:#64748b;
+font-size:13px;
+padding:24px 12px 40px
+}
+
+.small{
+font-size:12px;
+color:#64748b
+}
+
+.reqid{
+font-family:ui-monospace,monospace;
+font-weight:800
+}
+
+@media(max-width:650px){
+.grid{
+grid-template-columns:1fr
+}
+
+.full{
+grid-column:auto
+}
+
+.hero h1{
+font-size:24px
+}
+
+.track{
+grid-template-columns:1fr
+}
+}
 </style>
 </head>
+
 <body>
-<header class="hero">
-  <div class="brand">
-    <div class="coin-logo">🪙</div>
-    <div><b>OLD COIN COMPANY</b><span>पुराने नोट एवं सिक्के</span></div>
-  </div>
-  <button class="lang" onclick="toggleLang()">हिंदी / English</button>
+
+<header>
+<div class="brand">
+
+<div class="logo">🪙</div>
+
+<div>
+<b>OLD COIN COMPANY</b>
+<small>पुराने नोट एवं सिक्के</small>
+</div>
+
+<button class="lang" id="langBtn" type="button">
+हिंदी / English
+</button>
+
+</div>
 </header>
 
 <main>
-<section class="hero-card">
-  <div>
-    <p class="eyebrow">TRUSTED COLLECTION</p>
-    <h1>अपने पुराने नोट और सिक्के हमें भेजें</h1>
-    <p>अपनी वस्तुओं की फोटो और जानकारी भेजें। हमारी टीम जाँच के बाद आपको खरीद मूल्य बताएगी।</p>
-    <a class="primary" href="#request">Request भेजें / Send Request</a>
-  </div>
-  <div class="coin-art">🪙<br>💴 🪙 💰</div>
+
+<section class="hero">
+
+<div class="badges">
+<span class="badge">पुराने नोट खरीदें</span>
+<span class="badge">पुराने सिक्के खरीदें</span>
+<span class="badge">Photo Upload</span>
+</div>
+
+<h1>अपने पुराने नोट / सिक्के की जानकारी भेजें</h1>
+
+<p>
+हम केवल ग्राहक से पुराने नोट और सिक्के खरीदने के लिए अनुरोध लेते हैं।
+कीमत वस्तु की फोटो और विवरण की जाँच के बाद तय की जाएगी।
+</p>
+
+<a class="primary"
+style="display:inline-block;text-decoration:none"
+href="#request">
+Request भेजें / Send Request
+</a>
+
 </section>
 
-<section class="features">
-  <div>🪙<b>Multiple Items</b><small>एक request में कई नोट/सिक्के</small></div>
-  <div>📷<b>Photo Upload</b><small>साफ फोटो और details भेजें</small></div>
-  <div>💰<b>Our Offer</b><small>हमारी offer price देखें</small></div>
+
+<section class="panel" id="request">
+
+<h2>Customer Request / ग्राहक अनुरोध</h2>
+
+<form id="requestForm">
+
+<div class="grid">
+
+<div>
+<label>
+Customer Name / नाम
+<input required name="name" maxlength="80" placeholder="अपना नाम">
+</label>
+</div>
+
+<div>
+<label>
+Mobile / मोबाइल
+<input required name="mobile"
+inputmode="tel"
+pattern="[0-9+ ()-]{10,18}"
+placeholder="10 digit mobile">
+</label>
+</div>
+
+<div class="full">
+<label>
+Address / पता
+<textarea required name="address"
+maxlength="500"
+placeholder="पूरा पता"></textarea>
+</label>
+</div>
+
+<div>
+<label>
+Customer Photo / ग्राहक फोटो
+<input name="customer_photo"
+type="file"
+accept="image/*">
+</label>
+</div>
+
+<div>
+<label>
+Registration Fee (यदि लागू हो)
+<input name="registration_fee"
+type="number"
+min="0"
+step="0.01"
+value="0">
+</label>
+</div>
+
+</div>
+
+
+<h3>Notes / Coins</h3>
+
+<div id="items"></div>
+
+<button type="button"
+class="secondary"
+id="addItemBtn">
+＋ एक और नोट/सिक्का जोड़ें
+</button>
+
+
+<div class="notice" style="margin-top:12px">
+
+<strong>महत्वपूर्ण:</strong>
+कोई भी registration fee तभी दें जब वेबसाइट पर स्पष्ट रूप से दिखाई गई हो
+और आपको उसकी शर्तें समझ में आ गई हों।
+यह वेबसाइट कोई कीमत या खरीद की गारंटी नहीं देती।
+
+</div>
+
+
+<div class="grid" style="margin-top:12px">
+
+<div class="full">
+
+<label>
+
+<input type="checkbox"
+required
+name="consent"
+style="width:auto">
+
+मैं सहमत हूँ कि दी गई जानकारी Old Coin Company द्वारा
+इस request को process करने के लिए उपयोग की जा सकती है।
+
+</label>
+
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button class="primary wide"
+type="submit">
+
+Request Submit करें
+
+</button>
+
+</div>
+
+</form>
+
+
+<div id="result"
+class="result"
+hidden>
+</div>
+
 </section>
 
-<section id="request" class="panel">
-  <h2>Customer Request / ग्राहक अनुरोध</h2>
-  <form id="requestForm">
-    <div class="grid">
-      <label>Customer Name / नाम<input required name="name" placeholder="अपना नाम"></label>
-      <label>Mobile / मोबाइल<input required name="mobile" inputmode="tel" placeholder="10 digit mobile"></label>
-      <label class="wide">Address / पता<textarea required name="address" placeholder="पूरा पता"></textarea></label>
-    </div>
-    <h3>Notes / Coins — नोट या सिक्के</h3>
-    <div id="items"></div>
-    <button type="button" class="secondary" onclick="addItem()">＋ एक और नोट/सिक्का जोड़ें</button>
-    <div class="notice">फोटो आपके इसी browser में demo के रूप में रखी जाती है। वास्तविक online version में secure cloud storage/database जोड़ा जाएगा।</div>
-    <button class="primary full" type="submit">Request Submit करें</button>
-  </form>
-  <div id="result" class="result hidden"></div>
+
+<section class="panel">
+
+<h2>अपनी Request देखें</h2>
+
+<div class="track">
+
+<input id="trackId"
+placeholder="Request ID, जैसे OCC-123456"
+autocomplete="off">
+
+<button class="secondary"
+id="trackBtn"
+type="button">
+Track
+</button>
+
+</div>
+
+<div id="trackResult"
+style="margin-top:12px">
+</div>
+
+<p class="small">
+नोट: ग्राहक की निजी जानकारी सार्वजनिक रूप से प्रदर्शित नहीं की जाती।
+</p>
+
 </section>
 
-<section class="track panel">
-  <h2>अपनी Request देखें</h2>
-  <div class="track-row"><input id="trackId" placeholder="Request ID, जैसे OCC-123456"><button class="secondary" onclick="trackRequest()">Check Status</button></div>
-  <div id="trackResult"></div>
+
+<section class="panel">
+
+<h2>Contact / संपर्क</h2>
+
+<p>
+📞 <span id="callNumber">+91-0000000000</span>
+&nbsp; | &nbsp;
+💬 WhatsApp:
+<span id="waNumber">+91-0000000000</span>
+</p>
+
+<p class="small">
+संपर्क नंबर बाद में admin/cloud settings से बदला जा सकता है।
+</p>
+
 </section>
 
-<section class="contact panel">
-  <h2>Contact / संपर्क</h2>
-  <p>📞 <span id="callNumber">+91-0000000000</span> &nbsp; | &nbsp; 💬 <span id="waNumber">WhatsApp Number</span></p>
-  <p class="small">नोट: खरीद मूल्य जाँच के बाद Admin द्वारा निर्धारित किया जाएगा।</p>
-</section>
 </main>
-<footer>© Old Coin Company • Buy Old Notes & Coins • खरीद केवल</footer>
+
+
+<footer>
+© Old Coin Company • Buy Old Notes & Coins • पुराने नोट और सिक्के खरीदने के लिए
+</footer>
+
+
 <script>
-let itemsCount=0;
+
+const SUPABASE_URL =
+'https://giqpgthlmargepysurqz.supabase.co';
+
+const SUPABASE_PUBLISHABLE_KEY =
+'sb_publishable_spCQBKwK2QPu3G6GivA7dg_C2lWILmX';
+
+const BUCKET =
+'customer-images';
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+let itemNo = 0;
+
+
 function addItem(){
- itemsCount++;
- const box=document.createElement('div'); box.className='item'; box.id='item'+itemsCount;
- box.innerHTML=`<div class="item-head"><b>Item ${itemsCount} / वस्तु ${itemsCount}</b><button type="button" class="remove" onclick="this.closest('.item').remove()">हटाएँ</button></div>
- <div class="grid">
- <label>Type / प्रकार<select name="type"><option>Old Coin / पुराना सिक्का</option><option>Old Note / पुराना नोट</option></select></label>
- <label>Year / वर्ष<input name="year" placeholder="जैसे 1947"></label>
- <label>Quantity / संख्या<input name="qty" type="number" min="1" value="1"></label>
- <label>Photo / फोटो<input name="photo" type="file" accept="image/*"></label>
- <label class="wide">Details / विवरण<textarea name="details" placeholder="इस नोट/सिक्के की जानकारी"></textarea></label></div>`;
- document.getElementById('items').appendChild(box);
+
+itemNo++;
+
+const box =
+document.createElement('div');
+
+box.className='item';
+
+box.innerHTML=`
+
+<div class="item-head">
+
+<b>Item ${itemNo}</b>
+
+<button type="button"
+class="remove">
+हटाएँ
+</button>
+
+</div>
+
+<div class="grid"
+style="margin-top:10px">
+
+<label>
+Type / प्रकार
+
+<select name="type">
+
+<option>
+Old Coin / पुराना सिक्का
+</option>
+
+<option>
+Old Note / पुराना नोट
+</option>
+
+</select>
+
+</label>
+
+
+<label>
+Year / वर्ष
+
+<input
+name="year"
+inputmode="numeric"
+maxlength="4"
+placeholder="जैसे 1947">
+
+</label>
+
+
+<label>
+Quantity / संख्या
+
+<input
+name="qty"
+type="number"
+min="1"
+value="1">
+
+</label>
+
+
+<label>
+Photo / फोटो
+
+<input
+required
+name="photo"
+type="file"
+accept="image/*"
+multiple>
+
+</label>
+
+
+<label class="full">
+
+Details / विवरण
+
+<textarea
+name="details"
+maxlength="1000"
+placeholder="नोट/सिक्के की जानकारी">
+</textarea>
+
+</label>
+
+</div>
+`;
+
+
+box.querySelector('.remove').onclick =
+()=>{
+box.remove();
+};
+
+
+document
+.getElementById('items')
+.appendChild(box);
+
 }
+
+
 addItem();
 
-function toggleLang(){alert('Hindi / English interface तैयार है। अगले version में पूरी भाषा switch जोड़ी जा सकती है।')}
-function getData(){return JSON.parse(localStorage.getItem('occ_requests')||'[]')}
-function saveData(d){localStorage.setItem('occ_requests',JSON.stringify(d))}
-document.getElementById('requestForm').addEventListener('submit',async e=>{
- e.preventDefault(); const f=e.target; const fd=new FormData(f);
- const req={id:'OCC-'+Math.floor(100000+Math.random()*900000),name:fd.get('name'),mobile:fd.get('mobile'),address:fd.get('address'),status:'Pending / जाँच बाकी',offer:'',created:new Date().toLocaleString('hi-IN'),items:[]};
- for(const el of document.querySelectorAll('.item')){
-   const g=n=>el.querySelector(`[name="${n}"]`);
-   let photo=''; const file=g('photo')?.files?.[0];
-   if(file){photo=await new Promise(r=>{let x=new FileReader();x.onload=()=>r(x.result);x.readAsDataURL(file)})}
-   req.items.push({type:g('type').value,year:g('year').value,qty:g('qty').value,details:g('details').value,photo});
- }
- const d=getData();d.unshift(req);saveData(d);
- document.getElementById('result').classList.remove('hidden');
- document.getElementById('result').innerHTML=`<b>Request सफलतापूर्वक भेजी गई।</b><br>आपकी Request ID: <strong>${req.id}</strong><br>इसे संभालकर रखें।`;
- f.reset();document.getElementById('items').innerHTML='';itemsCount=0;addItem();
-});
-function trackRequest(){
- const id=document.getElementById('trackId').value.trim().toUpperCase();const r=getData().find(x=>x.id===id);
- document.getElementById('trackResult').innerHTML=r?`<div class="result"><b>${r.id}</b><br>Status: ${r.status}<br>${r.offer?`Our Offer / हमारी कीमत: <strong>₹${r.offer}</strong>`:'अभी offer price नहीं दी गई है।'}</div>`:`<p>Request नहीं मिली। ID जाँचें।</p>`;
+
+document
+.getElementById('addItemBtn')
+.addEventListener(
+'click',
+addItem
+);
+
+
+function makeId(){
+
+return 'OCC-' +
+Math.floor(
+100000 +
+Math.random()*900000
+);
+
 }
+
+
+function safeFileName(name){
+
+return name.replace(
+/[^a-zA-Z0-9._-]/g,
+'_'
+);
+
+}
+
+
+async function uploadFile(
+file,
+requestId,
+prefix
+){
+
+if(!file)
+return null;
+
+
+if(!file.type.startsWith('image/')){
+
+throw new Error(
+'केवल image file upload करें।'
+);
+
+}
+
+
+if(file.size > 8*1024*1024){
+
+throw new Error(
+'एक image 8 MB से छोटी रखें।'
+);
+
+}
+
+
+const path =
+`${requestId}/${prefix}-${Date.now()}-${safeFileName(file.name)}`;
+
+
+const {error} =
+await db.storage
+.from(BUCKET)
+.upload(
+path,
+file,
+{
+upsert:false,
+contentType:file.type
+}
+);
+
+
+if(error)
+throw error;
+
+
+return path;
+
+}
+
+
+document
+.getElementById('requestForm')
+.addEventListener(
+'submit',
+async function(e){
+
+e.preventDefault();
+
+
+const form=e.currentTarget;
+
+const btn=
+form.querySelector(
+'button[type=submit]'
+);
+
+const result=
+document.getElementById(
+'result'
+);
+
+
+result.hidden=true;
+
+btn.disabled=true;
+
+btn.textContent=
+'Submit हो रहा है...';
+
+
+try{
+
+const fd=
+new FormData(form);
+
+
+const requestId=
+makeId();
+
+
+const name=
+String(
+fd.get('name')||''
+).trim();
+
+
+const mobile=
+String(
+fd.get('mobile')||''
+).trim();
+
+
+const address=
+String(
+fd.get('address')||''
+).trim();
+
+
+const fee=
+Number(
+fd.get('registration_fee')||0
+);
+
+
+const customerPhotoFile=
+form.querySelector(
+'[name=customer_photo]'
+).files[0];
+
+
+const customerPhotoPath=
+customerPhotoFile
+?
+await uploadFile(
+customerPhotoFile,
+requestId,
+'customer'
+)
+:null;
+
+
+const itemEls=
+[
+...document.querySelectorAll(
+'#items .item'
+)
+];
+
+
+if(!itemEls.length){
+
+throw new Error(
+'कम से कम एक item जोड़ें।'
+);
+
+}
+
+
+for(
+let i=0;
+i<itemEls.length;
+i++
+){
+
+const el=itemEls[i];
+
+
+const files=[
+...el.querySelector(
+'[name=photo]'
+).files
+];
+
+
+if(!files.length){
+
+throw new Error(
+`Item ${i+1} की photo लगाएँ।`
+);
+
+}
+
+
+const uploaded=[];
+
+
+for(
+let j=0;
+j<files.length;
+j++
+){
+
+uploaded.push(
+await uploadFile(
+files[j],
+requestId,
+`item${i+1}-${j+1}`
+)
+);
+
+}
+
+
+const row={
+
+request_id:requestId,
+
+customer_name:name,
+
+customer_phone:mobile,
+
+customer_address:address,
+
+item_name:
+el.querySelector(
+'[name=type]'
+).value,
+
+item_description:
+`Year: ${
+el.querySelector('[name=year]').value||'-'
+} | Quantity: ${
+el.querySelector('[name=qty]').value||1
+} | Details: ${
+el.querySelector('[name=details]').value||''
+} | Photos: ${
+uploaded.join(',')
+}`,
+
+offer_price:null,
+
+status:'New / नया',
+
+image_url:
+uploaded[0]||null,
+
+payment_status:
+'Not Required',
+
+payment_screenshot_url:null,
+
+registration_fee:fee,
+
+customer_photo_url:
+customerPhotoPath
+
+};
+
+
+const {error}=
+await db
+.from('requests')
+.insert(row);
+
+
+if(error)
+throw error;
+
+}
+
+
+result.className=
+'result';
+
+
+result.innerHTML=`
+
+<b>
+Request सफलतापूर्वक भेज दी गई।
+</b>
+
+<br>
+
+आपकी Request ID:
+
+<span class="reqid">
+${requestId}
+</span>
+
+<br>
+
+<span class="small">
+इस ID को सुरक्षित रखें।
+इसी से status track करने में मदद मिलेगी।
+</span>
+
+`;
+
+
+result.hidden=false;
+
+
+localStorage.setItem(
+'occ_last_request',
+requestId
+);
+
+
+form.reset();
+
+
+document
+.getElementById('items')
+.innerHTML='';
+
+
+itemNo=0;
+
+addItem();
+
+
+}
+
+catch(err){
+
+console.error(err);
+
+
+result.className=
+'result error';
+
+
+result.innerHTML=`
+
+<b>
+Request भेजी नहीं जा सकी।
+</b>
+
+<br>
+
+${String(
+err.message||err
+)}
+
+`;
+
+
+result.hidden=false;
+
+}
+
+finally{
+
+btn.disabled=false;
+
+btn.textContent=
+'Request Submit करें';
+
+}
+
+});
+
+
+document
+.getElementById('trackBtn')
+.addEventListener(
+'click',
+function(){
+
+const id=
+document
+.getElementById('trackId')
+.value
+.trim()
+.toUpperCase();
+
+
+const out=
+document.getElementById(
+'trackResult'
+);
+
+
+if(!id){
+
+out.innerHTML=
+'<div class="result error">पहले Request ID डालें।</div>';
+
+return;
+
+}
+
+
+out.innerHTML=`
+
+<div class="notice">
+
+<b>${id}</b>
+
+<br>
+
+Cloud status lookup अभी secure
+admin/RPC setup पूरा होने के बाद सक्रिय होगा।
+
+<br>
+
+आपकी Request cloud database में save हो चुकी है।
+
+</div>
+
+`;
+
+});
+
+
+document
+.getElementById('langBtn')
+.onclick=function(){
+
+alert(
+'Hindi / English interface तैयार है।'
+);
+
+};
+
 </script>
+
 </body>
 </html>
