@@ -7,118 +7,39 @@
 
 <style>
 *{box-sizing:border-box}
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-color:#172033
-}
-header{
-background:#102a43;
-color:white;
-padding:25px 15px;
-text-align:center
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6f9;color:#172033}
+header{background:#102a43;color:#fff;padding:25px 15px;text-align:center}
 header h1{margin:0;font-size:28px}
 header p{margin:7px 0 0}
 main{max-width:900px;margin:20px auto;padding:0 14px}
-.card{
-background:white;
-padding:20px;
-margin-bottom:18px;
-border-radius:16px;
-box-shadow:0 5px 20px #00000012
-}
+.card{background:#fff;padding:20px;margin-bottom:18px;border-radius:16px;box-shadow:0 5px 20px #00000012}
 h2{margin-top:0}
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px
-}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .full{grid-column:1/-1}
 label{font-weight:bold;display:block}
-input,textarea,select{
-width:100%;
-padding:12px;
-margin-top:7px;
-border:1px solid #ccd4df;
-border-radius:10px;
-font-size:16px
-}
+input,textarea,select{width:100%;padding:12px;margin-top:7px;border:1px solid #ccd4df;border-radius:10px;font-size:16px}
 textarea{min-height:90px}
-button{
-border:0;
-border-radius:10px;
-padding:12px 16px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer
-}
-.primary{
-width:100%;
-background:#102a43;
-color:white;
-margin-top:18px
-}
-.secondary{
-background:#e8eef5;
-color:#102a43
-}
-.remove{
-background:#ffe5e5;
-color:#a00
-}
-.item{
-border:1px solid #d8e0e8;
-border-radius:14px;
-padding:14px;
-margin-top:14px
-}
-.itemhead{
-display:flex;
-justify-content:space-between;
-align-items:center
-}
-.success{
-background:#e8f8ed;
-border-left:4px solid #16823b;
-padding:14px;
-margin-top:15px;
-border-radius:8px
-}
-.error{
-background:#fff0f0;
-border-left:4px solid #c62828;
-padding:14px;
-margin-top:15px;
-border-radius:8px
-}
-.notice{
-background:#eef6ff;
-border-left:4px solid #2878c8;
-padding:14px;
-border-radius:8px
-}
+button{border:0;border-radius:10px;padding:12px 16px;font-size:16px;font-weight:bold;cursor:pointer}
+.primary{width:100%;background:#102a43;color:#fff;margin-top:18px}
+.secondary{background:#e8eef5;color:#102a43}
+.remove{background:#ffe5e5;color:#a00}
+.item{border:1px solid #d8e0e8;border-radius:14px;padding:14px;margin-top:14px}
+.itemhead{display:flex;justify-content:space-between;align-items:center}
+.success{background:#e8f8ed;border-left:4px solid #16823b;padding:14px;margin-top:15px;border-radius:8px}
+.error{background:#fff0f0;border-left:4px solid #c62828;padding:14px;margin-top:15px;border-radius:8px}
+.notice{background:#eef6ff;border-left:4px solid #2878c8;padding:14px;border-radius:8px}
 .muted{color:#667085}
 .reqid{font-size:22px;font-weight:bold}
-.request{
-border:1px solid #d8e0e8;
-border-radius:14px;
-padding:15px;
-margin-top:15px
-}
-.row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px
-}
-.toolbar{
-display:flex;
-justify-content:space-between;
-align-items:center
-}
+.request{border:1px solid #d8e0e8;border-radius:14px;padding:15px;margin-top:15px}
+.toolbar{display:flex;justify-content:space-between;align-items:center}
+.status{padding:7px 9px;border-radius:8px;border:1px solid #ccd4df}
+.offer{margin-top:10px}
+.cloud{font-size:13px;margin-top:8px}
+.ok{color:#16823b}
+.bad{color:#c62828}
+
 @media(max-width:650px){
-.grid,.row{grid-template-columns:1fr}
+.grid{grid-template-columns:1fr}
 .full{grid-column:auto}
 }
 </style>
@@ -133,8 +54,6 @@ align-items:center
 
 <main>
 
-<!-- CUSTOMER PAGE -->
-
 <div id="customerPage">
 
 <div class="card">
@@ -143,6 +62,10 @@ align-items:center
 
 <div class="notice">
 सही नाम, मोबाइल और पता भरें। एक या अधिक पुराने सिक्के/नोट की जानकारी भेज सकते हैं।
+</div>
+
+<div id="cloudStatus" class="cloud muted">
+Cloud connection जाँच रहा है...
 </div>
 
 <form id="requestForm">
@@ -166,30 +89,18 @@ align-items:center
 
 <label>
 Registration Fee
-<input
-name="registration_fee"
-type="number"
-min="0"
-step="0.01"
-value="0">
+<input name="registration_fee" type="number" min="0" step="0.01" value="0">
 </label>
 
 </div>
 
 <div id="items"></div>
 
-<button
-type="button"
-id="addItem"
-class="secondary"
-style="margin-top:15px">
+<button type="button" id="addItem" class="secondary" style="margin-top:15px">
 + दूसरा Item जोड़ें
 </button>
 
-<button
-type="submit"
-id="submitBtn"
-class="primary">
+<button type="submit" id="submitBtn" class="primary">
 Request Submit करें
 </button>
 
@@ -204,14 +115,9 @@ Request Submit करें
 
 <h2>Request Status</h2>
 
-<input
-id="trackId"
-placeholder="जैसे OCC-123456">
+<input id="trackId" placeholder="जैसे OCC-123456">
 
-<button
-id="trackBtn"
-class="secondary"
-style="margin-top:10px">
+<button id="trackBtn" class="secondary" style="margin-top:10px">
 Status Check
 </button>
 
@@ -231,8 +137,6 @@ Status Check
 </div>
 
 
-<!-- ADMIN PAGE -->
-
 <div id="adminPage" hidden>
 
 <div class="card" id="loginBox">
@@ -240,19 +144,18 @@ Status Check
 <h2>Owner / Admin Login</h2>
 
 <input
+id="adminEmail"
+type="email"
+placeholder="Admin Email">
+
+<input
 id="adminPassword"
 type="password"
 placeholder="Admin Password">
 
-<button
-id="loginBtn"
-class="primary">
+<button id="loginBtn" class="primary">
 Login
 </button>
-
-<p class="muted">
-Demo Password: <b>OCC1234</b>
-</p>
 
 </div>
 
@@ -263,11 +166,15 @@ Demo Password: <b>OCC1234</b>
 
 <h2>Customer Requests</h2>
 
-<button
-id="refreshBtn"
-class="secondary">
+<div>
+<button id="refreshBtn" class="secondary">
 Refresh
 </button>
+
+<button id="logoutBtn" class="secondary">
+Logout
+</button>
+</div>
 
 </div>
 
@@ -283,51 +190,132 @@ Refresh
 <script>
 
 /* =========================
-   DATABASE
+   SUPABASE CLOUD
 ========================= */
 
-const DATABASE_KEY="OLD_COIN_COMPANY_REQUESTS";
+const SUPABASE_URL=
+"https://giqpgthlmargepysurqz.supabase.co";
+
+const SUPABASE_KEY=
+"sb_publishable_spCQBKwK2QPu3G6GivA7dg_C2lWILmX";
+
+const REST=
+SUPABASE_URL+"/rest/v1";
+
+const AUTH=
+SUPABASE_URL+"/auth/v1";
+
+let accessToken="";
 
 
-function getRequests(){
+async function api(path,options={}){
+
+const headers=Object.assign(
+{
+"apikey":SUPABASE_KEY,
+"Content-Type":"application/json"
+},
+options.headers||{}
+);
+
+if(accessToken)
+headers.Authorization="Bearer "+accessToken;
+else
+headers.Authorization="Bearer "+SUPABASE_KEY;
+
+const r=
+await fetch(
+REST+path,
+Object.assign({},options,{headers})
+);
+
+const txt=await r.text();
+
+let data=null;
 
 try{
+data=txt?JSON.parse(txt):null;
+}catch{}
 
-return JSON.parse(
-localStorage.getItem(DATABASE_KEY)||"[]"
+if(!r.ok)
+throw new Error(
+(data&&data.message)||
+txt||
+("HTTP "+r.status)
 );
 
-}catch(e){
-
-return [];
-
-}
-
+return data;
 }
 
 
-function saveRequests(data){
+async function auth(path,options={}){
 
-localStorage.setItem(
-DATABASE_KEY,
-JSON.stringify(data)
+const headers=Object.assign(
+{
+"apikey":SUPABASE_KEY,
+"Content-Type":"application/json"
+},
+options.headers||{}
 );
 
+if(accessToken)
+headers.Authorization="Bearer "+accessToken;
+
+const r=
+await fetch(
+AUTH+path,
+Object.assign({},options,{headers})
+);
+
+const txt=await r.text();
+
+let data=null;
+
+try{
+data=txt?JSON.parse(txt):null;
+}catch{}
+
+if(!r.ok)
+throw new Error(
+(data&&data.msg)||
+(data&&data.message)||
+txt||
+("HTTP "+r.status)
+);
+
+return data;
 }
 
 
 /* =========================
-   SECURITY HTML
+   CLOUD TEST
 ========================= */
 
-function esc(value){
+async function testCloud(){
 
-return String(value||"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+const el=
+document.getElementById("cloudStatus");
+
+try{
+
+await api(
+"/requests?select=id&limit=1"
+);
+
+el.className="cloud ok";
+
+el.textContent=
+"✓ Cloud database connected";
+
+}catch(e){
+
+el.className="cloud bad";
+
+el.textContent=
+"✕ Cloud connection नहीं हो पाया: "+
+e.message;
+
+}
 
 }
 
@@ -338,7 +326,8 @@ return String(value||"")
 
 function createRequestId(){
 
-return "OCC-"+Math.floor(
+return "OCC-"+
+Math.floor(
 100000+
 Math.random()*900000
 );
@@ -347,7 +336,7 @@ Math.random()*900000
 
 
 /* =========================
-   ITEM SYSTEM
+   ITEMS
 ========================= */
 
 let itemNumber=0;
@@ -357,7 +346,8 @@ function addItem(){
 
 itemNumber++;
 
-const box=document.createElement("div");
+const box=
+document.createElement("div");
 
 box.className="item";
 
@@ -434,15 +424,11 @@ placeholder="सिक्के या नोट की जानकारी"><
 </div>
 `;
 
-
 box
 .querySelector(".remove")
-.onclick=function(){
-
+.onclick=()=>{
 box.remove();
-
 };
-
 
 document
 .getElementById("items")
@@ -460,6 +446,22 @@ document
 
 
 /* =========================
+   ESCAPE HTML
+========================= */
+
+function esc(value){
+
+return String(value||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
    CUSTOMER SUBMIT
 ========================= */
 
@@ -467,79 +469,51 @@ document
 .getElementById("requestForm")
 .addEventListener(
 "submit",
-function(e){
+async e=>{
 
 e.preventDefault();
-
 
 const form=e.currentTarget;
 
 const result=
 document.getElementById("result");
 
-const submitBtn=
+const btn=
 document.getElementById("submitBtn");
 
-
-const itemBoxes=[
+const boxes=[
 ...document.querySelectorAll(
 "#items .item"
 )
 ];
 
-
-if(!itemBoxes.length){
+if(!boxes.length){
 
 result.hidden=false;
 
 result.className="error";
 
-result.innerHTML=
+result.textContent=
 "कम से कम एक Item रखें।";
 
 return;
 
 }
 
+btn.disabled=true;
 
-submitBtn.disabled=true;
+btn.textContent=
+"Cloud पर Submit हो रहा है...";
 
-submitBtn.textContent=
-"Submit हो रहा है...";
 
+try{
 
 const requestId=
 createRequestId();
 
 
-const request={
-
-request_id:requestId,
-
-created_at:new Date().toISOString(),
-
-customer_name:
-form.name.value.trim(),
-
-customer_phone:
-form.mobile.value.trim(),
-
-customer_address:
-form.address.value.trim(),
-
-registration_fee:
-Number(
-form.registration_fee.value||0
-),
-
-status:
-"New / नया",
-
-offer_price:"",
-
-items:itemBoxes.map(function(box){
-
-return{
+const items=
+boxes.map(box=>({
 
 item_name:
 box.querySelector(
@@ -563,21 +537,68 @@ box.querySelector(
 '[name="details"]'
 ).value
 
+}));
+
+
+const row={
+
+request_id:
+requestId,
+
+customer_name:
+form.name.value.trim(),
+
+customer_phone:
+form.mobile.value.trim(),
+
+customer_address:
+form.address.value.trim(),
+
+"item name":
+items[0].item_name,
+
+item_description:
+JSON.stringify(items),
+
+"offer price":
+null,
+
+status:
+"New / नया",
+
+image_url:
+null,
+
+"payment status":
+"Not Required",
+
+payment_screenshot_url:
+null,
+
+registration_fee:
+Number(
+form.registration_fee.value||0
+),
+
+customer_photo_url:
+null
+
 };
 
-})
 
-};
+await api(
+"/requests",
+{
+method:"POST",
 
+headers:{
+Prefer:"return=minimal"
+},
 
-const requests=
-getRequests();
+body:
+JSON.stringify(row)
 
-
-requests.unshift(request);
-
-
-saveRequests(requests);
+});
 
 
 localStorage.setItem(
@@ -591,13 +612,11 @@ result.hidden=false;
 result.className="success";
 
 result.innerHTML=
-
-"<b>Request सफलतापूर्वक भेज दी गई।</b>"+
+"<b>Request Successfully Submitted</b>"+
 "<br><br>"+
-"आपकी Request ID:"+
-"<br>"+
+"आपकी Request ID:<br>"+
 "<span class='reqid'>"+
-requestId+
+esc(requestId)+
 "</span>"+
 "<br><br>"+
 "इस ID को सुरक्षित रखें।";
@@ -614,10 +633,27 @@ itemNumber=0;
 addItem();
 
 
-submitBtn.disabled=false;
+}catch(err){
 
-submitBtn.textContent=
+result.hidden=false;
+
+result.className="error";
+
+result.innerHTML=
+"<b>Request submit नहीं हुई।</b>"+
+"<br><br>"+
+esc(err.message)+
+"<br><br>"+
+"अगर Cloud connection error दिख रहा है तो पहले Supabase connection ठीक करना होगा।";
+
+}finally{
+
+btn.disabled=false;
+
+btn.textContent=
 "Request Submit करें";
+
+}
 
 });
 
@@ -628,7 +664,7 @@ submitBtn.textContent=
 
 document
 .getElementById("trackBtn")
-.onclick=function(){
+.onclick=async()=>{
 
 const id=
 document
@@ -637,16 +673,15 @@ document
 .trim()
 .toUpperCase();
 
-
-const output=
+const out=
 document
 .getElementById("trackResult");
 
 
 if(!id){
 
-output.innerHTML=
-"<div class='error'>"+
+out.innerHTML=
+'<div class="error">'+
 "पहले Request ID डालें।"+
 "</div>";
 
@@ -655,19 +690,27 @@ return;
 }
 
 
-const request=
-getRequests()
-.find(function(x){
-
-return x.request_id===id;
-
-});
+out.innerHTML=
+'<div class="notice">'+
+"Cloud से status देख रहे हैं..."+
+"</div>";
 
 
-if(!request){
+try{
 
-output.innerHTML=
-"<div class='error'>"+
+const data=
+await api(
+"/requests?select=request_id,status,%22offer%20price%22"+
+"&request_id=eq."+
+encodeURIComponent(id)+
+"&limit=1"
+);
+
+
+if(!data.length){
+
+out.innerHTML=
+'<div class="error">'+
 "यह Request ID नहीं मिली।"+
 "</div>";
 
@@ -676,66 +719,70 @@ return;
 }
 
 
-output.innerHTML=
+const r=data[0];
 
-"<div class='success'>"+
+
+out.innerHTML=
+'<div class="success">'+
 
 "<b>Request ID:</b> "+
-esc(request.request_id)+
+esc(r.request_id)+
 
 "<br><br>"+
 
 "<b>Status:</b> "+
-esc(request.status)+
+esc(r.status)+
 
 (
-request.offer_price
+r["offer price"]
 ?
-"<br><br><b>Company Offer:</b> ₹"+
-esc(request.offer_price)
-:""
+"<br><br>"+
+"<b>Company Offer:</b> ₹"+
+esc(r["offer price"])
+:
+""
 )+
 
 "</div>";
+
+
+}catch(err){
+
+out.innerHTML=
+'<div class="error">'+
+"<b>Status check नहीं हो पाया।</b>"+
+"<br>"+
+esc(err.message)+
+"</div>";
+
+}
 
 };
 
 
 /* =========================
-   ADMIN URL
+   PAGE
 ========================= */
 
 function showCorrectPage(){
 
-if(
-location.hash.toLowerCase()==="#admin"
-){
+const admin=
+location.hash.toLowerCase()==="#admin";
 
 document
 .getElementById("customerPage")
-.hidden=true;
+.hidden=admin;
 
 document
 .getElementById("adminPage")
-.hidden=false;
+.hidden=!admin;
 
-}else{
-
-document
-.getElementById("customerPage")
-.hidden=false;
-
-document
-.getElementById("adminPage")
-.hidden=true;
+if(!admin)
+testCloud();
 
 }
-
-}
-
 
 showCorrectPage();
-
 
 window.addEventListener(
 "hashchange",
@@ -749,7 +796,13 @@ showCorrectPage
 
 document
 .getElementById("loginBtn")
-.onclick=function(){
+.onclick=async()=>{
+
+const email=
+document
+.getElementById("adminEmail")
+.value
+.trim();
 
 const password=
 document
@@ -757,7 +810,37 @@ document
 .value;
 
 
-if(password==="OCC1234"){
+if(!email||!password){
+
+alert(
+"Email और password डालें।"
+);
+
+return;
+
+}
+
+
+try{
+
+const data=
+await auth(
+"/token?grant_type=password",
+{
+method:"POST",
+
+body:
+JSON.stringify({
+email:email,
+password:password
+})
+
+});
+
+
+accessToken=
+data.access_token;
+
 
 document
 .getElementById("loginBox")
@@ -767,12 +850,15 @@ document
 .getElementById("adminPanel")
 .hidden=false;
 
-renderAdmin();
 
-}else{
+await renderAdmin();
+
+
+}catch(e){
 
 alert(
-"Password गलत है।"
+"Admin login नहीं हुआ: "+
+e.message
 );
 
 }
@@ -781,24 +867,66 @@ alert(
 
 
 /* =========================
+   LOGOUT
+========================= */
+
+document
+.getElementById("logoutBtn")
+.onclick=()=>{
+
+accessToken="";
+
+document
+.getElementById("adminPanel")
+.hidden=true;
+
+document
+.getElementById("loginBox")
+.hidden=false;
+
+};
+
+
+/* =========================
+   REFRESH
+========================= */
+
+document
+.getElementById("refreshBtn")
+.onclick=
+renderAdmin;
+
+
+/* =========================
    ADMIN REQUESTS
 ========================= */
 
-function renderAdmin(){
+async function renderAdmin(){
 
 const box=
 document
 .getElementById("adminRequests");
 
+box.innerHTML=
+'<div class="notice">'+
+"Requests लोड हो रही हैं..."+
+"</div>";
 
-const requests=
-getRequests();
+
+try{
+
+const rows=
+await api(
+"/requests?select=*&order=created_at.desc&limit=100"
+);
 
 
-if(!requests.length){
+if(!rows.length){
 
 box.innerHTML=
-"<p class='muted'>अभी कोई Request नहीं है।</p>";
+"<p class='muted'>"+
+"अभी कोई Request नहीं है।"+
+"</p>";
 
 return;
 
@@ -808,27 +936,28 @@ return;
 box.innerHTML="";
 
 
-requests.forEach(
-function(request,index){
+rows.forEach((r,i)=>{
 
-const div=
+const d=
 document.createElement("div");
 
-div.className="request";
+d.className="request";
 
 
-div.innerHTML=`
+d.innerHTML=`
 
 <div class="itemhead">
 
 <b>
-${esc(request.request_id)}
+${esc(r.request_id)}
 </b>
 
 <span class="muted">
-${new Date(
-request.created_at
-).toLocaleString()}
+${r.created_at?
+new Date(
+r.created_at
+).toLocaleString():
+""}
 </span>
 
 </div>
@@ -837,26 +966,186 @@ request.created_at
 <p>
 
 <b>Customer:</b>
-${esc(request.customer_name)}
+${esc(r.customer_name)}
 
 <br>
 
 <b>Mobile:</b>
-${esc(request.customer_phone)}
+${esc(r.customer_phone)}
 
 <br>
 
 <b>Address:</b>
-${esc(request.customer_address)}
+${esc(r.customer_address)}
 
 <br>
 
 <b>Registration Fee:</b>
-₹${esc(request.registration_fee)}
+₹${esc(r.registration_fee)}
 
 </p>
 
 
-<div>
+<p>
 
-<b>Items
+<b>Item:</b>
+${esc(r["item name"])}
+
+<br>
+
+<b>Details:</b>
+${esc(r.item_description)}
+
+</p>
+
+
+<div class="grid">
+
+
+<label>
+Status
+
+<select
+class="status"
+data-id="${esc(r.id)}">
+
+<option
+${r.status==="New / नया"?
+"selected":""}>
+New / नया
+</option>
+
+<option
+${r.status==="Review / जाँच में"?
+"selected":""}>
+Review / जाँच में
+</option>
+
+<option
+${r.status==="Offer Given / ऑफर दिया"?
+"selected":""}>
+Offer Given / ऑफर दिया
+</option>
+
+<option
+${r.status==="Approved / स्वीकार"?
+"selected":""}>
+Approved / स्वीकार
+</option>
+
+<option
+${r.status==="Rejected / अस्वीकार"?
+"selected":""}>
+Rejected / अस्वीकार
+</option>
+
+</select>
+
+</label>
+
+
+<label>
+Offer Price
+
+<input
+class="offer"
+data-id="${esc(r.id)}"
+value="${esc(r["offer price"]||"")}"
+inputmode="decimal">
+
+</label>
+
+</div>
+
+
+<button
+class="primary saveRow"
+data-id="${esc(r.id)}">
+
+Update saved करें
+
+</button>
+
+`;
+
+
+d
+.querySelector(".saveRow")
+.onclick=async()=>{
+
+const id=
+d.querySelector(
+".saveRow"
+).dataset.id;
+
+const status=
+d.querySelector(
+".status"
+).value;
+
+const offer=
+d.querySelector(
+".offer"
+).value.trim();
+
+
+try{
+
+await api(
+"/requests?id=eq."+
+encodeURIComponent(id),
+{
+method:"PATCH",
+
+headers:{
+Prefer:"return=minimal"
+},
+
+body:
+JSON.stringify({
+status:status,
+"offer price":
+offer||null
+})
+
+});
+
+
+alert(
+"Update saved"
+);
+
+
+}catch(e){
+
+alert(
+"Update नहीं हुआ: "+
+e.message
+);
+
+}
+
+};
+
+
+box.appendChild(d);
+
+});
+
+
+}catch(e){
+
+box.innerHTML=
+'<div class="error">'+
+"Admin data load नहीं हुआ: "+
+esc(e.message)+
+"</div>";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
